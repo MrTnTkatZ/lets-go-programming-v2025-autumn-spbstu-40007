@@ -26,5 +26,6 @@ func DecodeXML(inputFile []byte, valCurs *config.ValCurs) error {
 	if err != nil {
 		return fmt.Errorf("%w", err)
 	}
+
 	return nil
 }

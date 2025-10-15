@@ -4,12 +4,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
-	"sort"
-	"strconv"
-	"strings"
 
 	"github.com/tntkatz/task-3/internal/config"
 	"github.com/tntkatz/task-3/internal/pathcreator"
+	"github.com/tntkatz/task-3/internal/processvalute"
 	"github.com/tntkatz/task-3/internal/xmldecoder"
 	"gopkg.in/yaml.v3"
 )
@@ -48,29 +46,10 @@ func Run(configPath string) error {
 
 	processedValutes := make([]config.ProcessedValute, 0, len(valCurs.Valute))
 
-	for _, valute := range valCurs.Valute {
-		newValue := strings.Replace(valute.Value, ",", ".", 1)
-
-		sortValue, err := strconv.ParseFloat(newValue, 64)
-		if err != nil {
-			return fmt.Errorf("%w", err)
-		}
-
-		processedValute := config.ProcessedValute{
-			ID:        valute.ID,
-			NumCode:   valute.NumCode,
-			CharCode:  valute.CharCode,
-			Nominal:   valute.Nominal,
-			Name:      valute.Name,
-			Value:     valute.Value,
-			VunitRate: valute.VunitRate,
-			SortValue: sortValue,
-		}
-
-		processedValutes = append(processedValutes, processedValute)
+	err = processvalute.ProcessValute(valCurs, processedValutes)
+	if err != nil {
+		return fmt.Errorf("%w", err)
 	}
-
-	sort.Sort(config.ByValue(processedValutes))
 
 	currencyResults := make([]config.CurrencyResult, 0, len(processedValutes))
 
