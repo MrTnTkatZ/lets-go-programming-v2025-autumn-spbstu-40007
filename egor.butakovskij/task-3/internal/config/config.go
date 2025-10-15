@@ -7,7 +7,7 @@ type Config struct {
 
 type Valute struct {
 	ID        string `xml:"ID,attr"`
-	NumCode   string `xml:"NumCode"`
+	NumCode   int    `xml:"NumCode"`
 	CharCode  string `xml:"CharCode"`
 	Nominal   string `xml:"Nominal"`
 	Name      string `xml:"Name"`
@@ -17,7 +17,7 @@ type Valute struct {
 
 type ProcessedValute struct {
 	ID        string `xml:"ID,attr"`
-	NumCode   string `xml:"NumCode"`
+	NumCode   int    `xml:"NumCode"`
 	CharCode  string `xml:"CharCode"`
 	Nominal   string `xml:"Nominal"`
 	Name      string `xml:"Name"`
