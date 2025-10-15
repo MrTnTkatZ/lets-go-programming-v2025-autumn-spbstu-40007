@@ -14,7 +14,6 @@ func PathCreator(outputFile string) error {
 		if err != nil {
 			return fmt.Errorf("%w", err)
 		}
-
 	}
 
 	return nil
