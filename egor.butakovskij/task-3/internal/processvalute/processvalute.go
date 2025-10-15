@@ -9,13 +9,15 @@ import (
 	"github.com/tntkatz/task-3/internal/config"
 )
 
-func ProcessValute(valCurs config.ValCurs, processedValutes *[]config.ProcessedValute) error {
+func ProcessValute(valCurs config.ValCurs) ([]config.ProcessedValute, error) {
+	processedValutes := make([]config.ProcessedValute, 0, len(valCurs.Valute))
+
 	for _, valute := range valCurs.Valute {
 		newValue := strings.Replace(valute.Value, ",", ".", 1)
 
 		sortValue, err := strconv.ParseFloat(newValue, 64)
 		if err != nil {
-			return fmt.Errorf("%w", err)
+			return nil, fmt.Errorf("%w", err)
 		}
 
 		processedValute := config.ProcessedValute{
@@ -34,5 +36,5 @@ func ProcessValute(valCurs config.ValCurs, processedValutes *[]config.ProcessedV
 
 	sort.Sort(config.ByValue(processedValutes))
 
-	return nil
+	return processedValutes, nil
 }
