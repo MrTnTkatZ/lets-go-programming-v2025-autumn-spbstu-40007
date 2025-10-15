@@ -46,7 +46,7 @@ func Run(configPath string) error {
 
 	processedValutes := make([]config.ProcessedValute, 0, len(valCurs.Valute))
 
-	err = processvalute.ProcessValute(valCurs, processedValutes)
+	err = processvalute.ProcessValute(valCurs, &processedValutes)
 	if err != nil {
 		return fmt.Errorf("%w", err)
 	}

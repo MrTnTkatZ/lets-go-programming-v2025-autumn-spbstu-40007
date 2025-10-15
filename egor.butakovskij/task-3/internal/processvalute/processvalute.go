@@ -9,7 +9,7 @@ import (
 	"github.com/tntkatz/task-3/internal/config"
 )
 
-func ProcessValute(valCurs config.ValCurs, processedValutes []config.ProcessedValute) error {
+func ProcessValute(valCurs config.ValCurs, processedValutes *[]config.ProcessedValute) error {
 	for _, valute := range valCurs.Valute {
 		newValue := strings.Replace(valute.Value, ",", ".", 1)
 
