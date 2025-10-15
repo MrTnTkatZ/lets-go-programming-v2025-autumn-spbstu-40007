@@ -6,8 +6,9 @@ import (
 	"os"
 
 	"github.com/tntkatz/task-3/internal/config"
+	"github.com/tntkatz/task-3/internal/crp"
 	"github.com/tntkatz/task-3/internal/pathcreator"
-	"github.com/tntkatz/task-3/internal/processvalute"
+	"github.com/tntkatz/task-3/internal/vp"
 	"github.com/tntkatz/task-3/internal/xmldecoder"
 	"gopkg.in/yaml.v3"
 )
@@ -44,22 +45,12 @@ func Run(configPath string) error {
 		return fmt.Errorf("%w", err)
 	}
 
-	processedValutes, err := processvalute.ProcessValute(valCurs)
+	processedValutes, err := vp.ValuteProcess(valCurs)
 	if err != nil {
 		return fmt.Errorf("%w", err)
 	}
 
-	currencyResults := make([]config.CurrencyResult, 0, len(processedValutes))
-
-	for _, pVal := range processedValutes {
-		currencyResult := config.CurrencyResult{
-			NumCode:  pVal.NumCode,
-			CharCode: pVal.CharCode,
-			Value:    pVal.SortValue,
-		}
-
-		currencyResults = append(currencyResults, currencyResult)
-	}
+	currencyResults := crp.CurrencyProcess(processedValutes)
 
 	jsonData, err := json.Marshal(currencyResults)
 	if err != nil {

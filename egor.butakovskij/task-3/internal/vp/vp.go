@@ -1,4 +1,4 @@
-package processvalute
+package vp
 
 import (
 	"fmt"
@@ -9,7 +9,7 @@ import (
 	"github.com/tntkatz/task-3/internal/config"
 )
 
-func ProcessValute(valCurs config.ValCurs) ([]config.ProcessedValute, error) {
+func ValuteProcess(valCurs config.ValCurs) ([]config.ProcessedValute, error) {
 	processedValutes := make([]config.ProcessedValute, 0, len(valCurs.Valute))
 
 	for _, valute := range valCurs.Valute {
