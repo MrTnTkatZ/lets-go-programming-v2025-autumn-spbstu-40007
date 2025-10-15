@@ -19,7 +19,7 @@ func DecodeXML(inputFile []byte, valCurs *config.ValCurs) error {
 			return charmap.Windows1251.NewDecoder().Reader(input), nil
 		}
 
-		return nil, fmt.Errorf("%q", charset)
+		return nil, fmt.Errorf("unsupported charset: %q", charset)
 	}
 
 	err := decoder.Decode(&valCurs)

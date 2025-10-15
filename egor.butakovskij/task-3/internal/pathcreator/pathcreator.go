@@ -11,6 +11,7 @@ func PathCreator(outputFile string) error {
 
 	if outputDir != "" {
 		err := os.MkdirAll(outputDir, 0755)
+
 		if err != nil {
 			return fmt.Errorf("%w", err)
 		}
