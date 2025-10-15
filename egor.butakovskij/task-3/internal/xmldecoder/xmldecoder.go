@@ -3,6 +3,7 @@ package xmldecoder
 import (
 	"bytes"
 	"encoding/xml"
+	"errors"
 	"fmt"
 	"io"
 	"strings"
@@ -10,6 +11,8 @@ import (
 	"github.com/tntkatz/task-3/internal/config"
 	"golang.org/x/text/encoding/charmap"
 )
+
+var ErrUnsupportedCharset = errors.New("unsupported charset")
 
 func DecodeXML(inputFile []byte, valCurs *config.ValCurs) error {
 	decoder := xml.NewDecoder(bytes.NewReader(inputFile))
@@ -19,12 +22,13 @@ func DecodeXML(inputFile []byte, valCurs *config.ValCurs) error {
 			return charmap.Windows1251.NewDecoder().Reader(input), nil
 		}
 
-		return nil, fmt.Errorf("%s", charset)
+		return nil, fmt.Errorf("%w: %s", ErrUnsupportedCharset, charset)
 	}
 
 	err := decoder.Decode(&valCurs)
 	if err != nil {
 		return fmt.Errorf("%w", err)
 	}
+
 	return nil
 }
