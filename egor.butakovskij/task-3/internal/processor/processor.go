@@ -13,6 +13,8 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
+const DefaultFilePermissions = 0o600
+
 func Run(configPath string) error {
 	data, err := os.ReadFile(configPath)
 	if err != nil {
@@ -62,7 +64,7 @@ func Run(configPath string) error {
 		return fmt.Errorf("%w", err)
 	}
 
-	err = os.WriteFile(cfg.OutputFile, jsonData, 0o600)
+	err = os.WriteFile(cfg.OutputFile, jsonData, DefaultFilePermissions)
 	if err != nil {
 		return fmt.Errorf("%w", err)
 	}

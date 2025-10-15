@@ -6,11 +6,13 @@ import (
 	"path/filepath"
 )
 
+const DefaultDirPermissions = 0o755
+
 func PathCreator(outputFile string) error {
 	outputDir := filepath.Dir(outputFile)
 
 	if outputDir != "" {
-		err := os.MkdirAll(outputDir, 0o755)
+		err := os.MkdirAll(outputDir, DefaultDirPermissions)
 		if err != nil {
 			return fmt.Errorf("%w", err)
 		}
