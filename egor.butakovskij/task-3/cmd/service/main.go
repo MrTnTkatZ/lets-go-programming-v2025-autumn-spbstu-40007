@@ -10,6 +10,7 @@ func main() {
 	var configPath string
 	flag.StringVar(&configPath, "config", "./configs/config.yaml", "Write a path to config")
 	flag.Parse()
+
 	err := processor.Run(configPath)
 	if err != nil {
 		panic(err)

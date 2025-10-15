@@ -7,27 +7,30 @@ import (
 	"fmt"
 	"io"
 	"os"
-	"path/filepath"
 	"sort"
 	"strconv"
 	"strings"
 
 	"github.com/tntkatz/task-3/internal/config"
+	"github.com/tntkatz/task-3/internal/pathcreator"
 	"golang.org/x/text/encoding/charmap"
 	"gopkg.in/yaml.v3"
 )
 
 func Run(configPath string) error {
-
 	data, err := os.ReadFile(configPath)
 	if err != nil {
 		return err
 	}
 
-	cfg := config.Config{}
+	cfg := config.Config{
+		InputFile:  "",
+		OutputFile: "",
+	}
+
 	err = yaml.Unmarshal(data, &cfg)
 	if err != nil {
-		return err
+		return fmt.Errorf("%w", err)
 	}
 
 	inputFile, err := os.ReadFile(cfg.InputFile)
@@ -35,7 +38,11 @@ func Run(configPath string) error {
 		return err
 	}
 
-	valCurs := config.ValCurs{}
+	valCurs := config.ValCurs{
+		Date:   "",
+		Name:   "",
+		Valute: nil,
+	}
 
 	decoder := xml.NewDecoder(bytes.NewReader(inputFile))
 
@@ -44,15 +51,15 @@ func Run(configPath string) error {
 			return charmap.Windows1251.NewDecoder().Reader(input), nil
 		}
 
-		return nil, fmt.Errorf(charset)
+		return nil, fmt.Errorf("%s", charset)
 	}
 
 	err = decoder.Decode(&valCurs)
 	if err != nil {
-		return err
+		return fmt.Errorf("%w", err)
 	}
 
-	var processedValutes []config.ProcessedValute
+	processedValutes := make([]config.ProcessedValute, 0, len(valCurs.Valute))
 
 	for _, valute := range valCurs.Valute {
 		newValue := strings.Replace(valute.Value, ",", ".", 1)
@@ -78,7 +85,7 @@ func Run(configPath string) error {
 
 	sort.Sort(config.ByValue(processedValutes))
 
-	var currencyResults []config.CurrencyResult
+	currencyResults := make([]config.CurrencyResult, 0, len(processedValutes))
 
 	for _, pVal := range processedValutes {
 		currencyResult := config.CurrencyResult{
@@ -86,23 +93,21 @@ func Run(configPath string) error {
 			CharCode: pVal.CharCode,
 			Value:    pVal.SortValue,
 		}
+
 		currencyResults = append(currencyResults, currencyResult)
 	}
 
 	jsonData, err := json.Marshal(currencyResults)
 	if err != nil {
-		return err
+		return fmt.Errorf("%w", err)
 	}
 
-	outputDir := filepath.Dir(cfg.OutputFile)
-	if outputDir != "" {
-		err := os.MkdirAll(outputDir, 0755)
-		if err != nil {
-			return err
-		}
+	err = pathcreator.PathCreator(cfg.OutputFile)
+	if err != nil {
+		return fmt.Errorf("%w", err)
 	}
 
-	err = os.WriteFile(cfg.OutputFile, jsonData, 0644)
+	err = os.WriteFile(cfg.OutputFile, jsonData, 0600)
 	if err != nil {
 		return err
 	}

@@ -16,20 +16,20 @@ type Valute struct {
 }
 
 type ProcessedValute struct {
-	ID        string `xml:"ID,attr"`
-	NumCode   int    `xml:"NumCode"`
-	CharCode  string `xml:"CharCode"`
-	Nominal   string `xml:"Nominal"`
-	Name      string `xml:"Name"`
-	Value     string `xml:"Value"`
-	VunitRate string `xml:"VunitRate"`
-	SortValue float64
+	ID        string  `xml:"ID,attr"`
+	NumCode   int     `xml:"NumCode"`
+	CharCode  string  `xml:"CharCode"`
+	Nominal   string  `xml:"Nominal"`
+	Name      string  `xml:"Name"`
+	Value     string  `xml:"Value"`
+	VunitRate string  `xml:"VunitRate"`
+	SortValue float64 `xml:"SortValue"`
 }
 
 type ValCurs struct {
-	Date   string `xml:"Date,attr"`
-	Name   string `xml:"name,attr"`
-	Valute []Valute
+	Date   string   `xml:"Date,attr"`
+	Name   string   `xml:"name,attr"`
+	Valute []Valute `xml:"Valute"`
 }
 
 type CurrencyResult struct {
