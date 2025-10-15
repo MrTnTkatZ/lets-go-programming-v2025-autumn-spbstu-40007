@@ -20,7 +20,7 @@ import (
 func Run(configPath string) error {
 	data, err := os.ReadFile(configPath)
 	if err != nil {
-		return err
+		return fmt.Errorf("%w", err)
 	}
 
 	cfg := config.Config{
@@ -35,7 +35,7 @@ func Run(configPath string) error {
 
 	inputFile, err := os.ReadFile(cfg.InputFile)
 	if err != nil {
-		return err
+		return fmt.Errorf("%w", err)
 	}
 
 	valCurs := config.ValCurs{
@@ -66,7 +66,7 @@ func Run(configPath string) error {
 
 		sortValue, err := strconv.ParseFloat(newValue, 64)
 		if err != nil {
-			return err
+			return fmt.Errorf("%w", err)
 		}
 
 		processedValute := config.ProcessedValute{
@@ -109,7 +109,7 @@ func Run(configPath string) error {
 
 	err = os.WriteFile(cfg.OutputFile, jsonData, 0600)
 	if err != nil {
-		return err
+		return fmt.Errorf("%w", err)
 	}
 
 	return nil
