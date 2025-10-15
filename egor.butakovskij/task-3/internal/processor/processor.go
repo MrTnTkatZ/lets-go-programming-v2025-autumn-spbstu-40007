@@ -62,7 +62,7 @@ func Run(configPath string) error {
 		return fmt.Errorf("%w", err)
 	}
 
-	err = os.WriteFile(cfg.OutputFile, jsonData, 0600)
+	err = os.WriteFile(cfg.OutputFile, jsonData, 0o600)
 	if err != nil {
 		return fmt.Errorf("%w", err)
 	}
